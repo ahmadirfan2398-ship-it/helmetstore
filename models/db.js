@@ -7,7 +7,10 @@ const bcrypt = require('bcryptjs');
 const dataDir = path.join(__dirname, '..', 'data');
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-const adapter = new FileSync(path.join(dataDir, 'db.json'));
+const dbPath = path.join(dataDir, 'db.json');
+if (!fs.existsSync(dbPath)) fs.writeFileSync(dbPath, '{}', 'utf-8');
+
+const adapter = new FileSync(dbPath);
 const db = low(adapter);
 
 // Seed default structure if file is empty
