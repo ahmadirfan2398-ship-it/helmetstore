@@ -251,7 +251,7 @@ a, button { transition: color 0.2s, background 0.2s, transform 0.15s, box-shadow
 .fab-whatsapp {
   position: fixed;
   bottom: 80px;
-  inset-inline-end: 24px;
+  right: 24px;
   width: 54px;
   height: 54px;
   border-radius: 50%;
@@ -270,7 +270,7 @@ a, button { transition: color 0.2s, background 0.2s, transform 0.15s, box-shadow
 .back-to-top {
   position: fixed;
   bottom: 24px;
-  inset-inline-end: 24px;
+  right: 24px;
   width: 54px;
   height: 54px;
   border-radius: 50%;
