@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" class="container" tabindex="-1">
+    <h1><%= t.your_cart %></h1>
+
+    <% if (cart.length === 0) { %>
+      <p class="empty-msg"><%= t.empty_cart %></p>
+      <a href="/shop" class="btn btn-primary"><%= t.continue_shopping %></a>
+    <% } else { %>
+      <form action="/cart/update" method="POST">
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th><%= t.product %></th>
+              <th><%= t.price %></th>
+              <th><%= t.quantity %></th>
+              <th><%= t.total %></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% cart.forEach(item => { %>
+              <tr>
+                <td class="cart-product-cell">
+                  <% if (item.image) { %><img src="<%= item.image %>" class="cart-thumb"><% } %>
+                  <%= lang === 'ur' ? item.name_ur : item.name_en %>
+                </td>
+                <td>Rs. <%= item.price.toLocaleString() %></td>
+                <td><input type="number" name="qty[<%= item.id %>]" value="<%= item.qty %>" min="1" class="qty-input"></td>
+                <td>Rs. <%= (item.price * item.qty).toLocaleString() %></td>
+                <td>
+                  <button type="submit" form="remove-<%= item.id %>" class="btn-remove"><%= t.remove %></button>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <button type="submit" class="btn btn-outline"><%= t.update %></button>
+      </form>
+
+      <% cart.forEach(item => { %>
+        <form id="remove-<%= item.id %>" action="/cart/remove/<%= item.id %>" method="POST" style="display:none;"></form>
+      <% }) %>
+
+      <div class="cart-summary">
+        <h3><%= t.total %>: Rs. <%= total.toLocaleString() %></h3>
+        <a href="/checkout" class="btn btn-primary"><%= t.proceed_checkout %></a>
+      </div>
+    <% } %>
+  </main>
+
+  <%- include('partials/policy-section') %>
+  <%- include('partials/faq-section') %>
+  <%- include('partials/contact-section') %>
+  <%- include('partials/footer') %>
+</body>
+</html>

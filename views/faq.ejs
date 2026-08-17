@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" class="container faq-page" tabindex="-1">
+    <% var crumbs = [{label: t.faq_link}]; %>
+    <%- include('partials/breadcrumb', { crumbs: crumbs }) %>
+    <h1><%= t.faq_title %></h1>
+
+    <div class="accordion">
+      <% t.faq.forEach((item, i) => { %>
+        <div class="accordion-item">
+          <button class="accordion-header" data-index="<%= i %>">
+            <span><%= item.q %></span>
+            <i class="fa-solid fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-body">
+            <p><%= item.a %></p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+
+  <%- include('partials/contact-section') %>
+  <%- include('partials/footer') %>
+</body>
+</html>

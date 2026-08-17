@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" class="container auth-page" tabindex="-1">
+    <div class="auth-box wide">
+      <h1><%= t.contact_title %></h1>
+      <p><%= t.contact_msg %></p>
+      <% if (error) { %><p class="error-msg"><%= error %></p><% } %>
+
+      <form action="/contact" method="POST" class="auth-form">
+        <label><%= t.your_name %></label>
+        <input type="text" name="name" required>
+
+        <label><%= t.email %></label>
+        <input type="email" name="email" required>
+
+        <label><%= t.phone_number %></label>
+        <div class="phone-input-group">
+          <select name="countryCode" class="country-code-select">
+            <option value="+92" selected>🇵🇰 +92</option>
+            <option value="+91">🇮🇳 +91</option>
+            <option value="+971">🇦🇪 +971</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+1">🇺🇸 +1</option>
+          </select>
+          <input type="tel" name="phone" placeholder="300 1234567">
+        </div>
+
+        <label><%= t.message_label %></label>
+        <textarea name="message" rows="4" required></textarea>
+
+        <label>Security Check: What is <%= captcha.a %> + <%= captcha.b %>?</label>
+        <input type="number" name="captchaAnswer" required class="captcha-input">
+
+        <button type="submit" class="btn btn-primary full-width"><%= t.send_message %></button>
+      </form>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

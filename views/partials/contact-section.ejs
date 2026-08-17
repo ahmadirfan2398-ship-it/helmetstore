@@ -1,0 +1,16 @@
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-section-inner">
+      <div class="contact-section-text">
+        <h2><i class="fa-solid fa-envelope"></i> <%= t.contact_title %></h2>
+        <p><%= t.contact_msg %></p>
+      </div>
+      <form action="/contact-quick" method="POST" class="contact-quick-form">
+        <input type="text" name="name" placeholder="<%= t.your_name %>" required>
+        <input type="email" name="email" placeholder="<%= t.email %>" required>
+        <textarea name="message" rows="3" placeholder="<%= t.message_label %>" required></textarea>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> <%= t.send_message %></button>
+      </form>
+    </div>
+  </div>
+</section>

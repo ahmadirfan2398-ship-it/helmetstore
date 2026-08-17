@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" class="container auth-page" tabindex="-1">
+    <div class="auth-box">
+      <h1><%= t.login_title %></h1>
+      <% if (error) { %><p class="error-msg"><%= error %></p><% } %>
+
+      <form action="/login" method="POST" class="auth-form">
+        <label><%= t.email %></label>
+        <input type="email" name="email" required autofocus>
+
+        <label><%= t.password %></label>
+        <div class="password-input-group">
+          <input type="password" name="password" id="loginPassword" required>
+          <button type="button" class="toggle-password" data-target="loginPassword"><i class="fa-solid fa-eye"></i></button>
+        </div>
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="remember">
+          <%= t.remember_me %>
+        </label>
+
+        <button type="submit" class="btn btn-primary full-width"><%= t.login_btn %></button>
+      </form>
+
+      <p class="auth-switch"><%= t.no_account %> <a href="/signup"><%= t.signup_link %></a></p>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

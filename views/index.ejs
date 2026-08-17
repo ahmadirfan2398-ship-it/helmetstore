@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" tabindex="-1">
+    <section class="hero">
+      <div class="container">
+        <h1 class="animate-fade-up"><%= lang === 'ur' ? settings.siteName_ur : settings.siteName_en %></h1>
+        <p class="animate-fade-up delay-1"><%= t.site_tagline %></p>
+        <a href="/shop" class="btn btn-primary animate-fade-up delay-2"><i class="fa-solid fa-shop"></i> <%= t.shop %></a>
+
+        <div class="stats-row animate-fade-up delay-2">
+          <div class="stat-item">
+            <h3 class="counter" data-target="2500">0</h3>
+            <p><%= t.happy_customers %></p>
+          </div>
+          <div class="stat-item">
+            <h3 class="counter" data-target="45">0</h3>
+            <p><%= t.helmet_models %></p>
+          </div>
+          <div class="stat-item">
+            <h3 class="counter" data-target="30">0</h3>
+            <p><%= t.cities_covered %></p>
+          </div>
+          <div class="stat-item">
+            <h3 class="counter" data-target="5">0</h3>
+            <p><%= t.years_experience %></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Carousel / promo slider -->
+    <div class="container">
+      <div class="carousel" id="promoCarousel">
+        <div class="carousel-track">
+          <div class="carousel-slide" style="background: linear-gradient(135deg, #1E88E5, #0d47a1);">
+            <h2>🪖 COD Available Everywhere</h2>
+            <p>Order now, pay when it arrives at your door.</p>
+          </div>
+          <div class="carousel-slide" style="background: linear-gradient(135deg, #EF6C00, #b34700);">
+            <h2>🚚 Free Delivery Rs. 5000+</h2>
+            <p>Shop more, save more on delivery charges.</p>
+          </div>
+          <div class="carousel-slide" style="background: linear-gradient(135deg, #2E7D32, #1b5e20);">
+            <h2>✅ DOT Certified Helmets</h2>
+            <p>Safety first — all full face helmets are certified.</p>
+          </div>
+        </div>
+        <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="carousel-btn next" id="carouselNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </div>
+    </div>
+
+    <section class="container">
+      <div class="category-pills">
+        <a href="/shop" class="pill"><i class="fa-solid fa-layer-group"></i> <%= t.all_categories %></a>
+        <% categories.forEach(cat => { %>
+          <a href="/shop?category=<%= encodeURIComponent(cat) %>" class="pill"><%= cat %></a>
+        <% }) %>
+      </div>
+
+      <h2 class="section-title"><%= t.featured_products %></h2>
+
+      <!-- Skeleton loader (shown briefly while content "loads") -->
+      <div class="product-grid" id="skeletonGrid">
+        <% for (let i = 0; i < 4; i++) { %>
+          <div class="skeleton-card">
+            <div class="skeleton-box skeleton-img"></div>
+            <div class="skeleton-box skeleton-line"></div>
+            <div class="skeleton-box skeleton-line short"></div>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="product-grid" id="productGrid" style="display:none;">
+        <% products.forEach((p, i) => { %>
+          <div class="product-card animate-on-scroll" style="transition-delay: <%= i * 0.06 %>s;">
+            <a href="/product/<%= p.id %>">
+              <div class="product-img">
+                <% if (p.image) { %>
+                  <img src="<%= p.image %>" alt="<%= p.name_en %>">
+                <% } else { %>
+                  <div class="img-placeholder">🪖</div>
+                <% } %>
+              </div>
+              <h3><%= lang === 'ur' ? p.name_ur : p.name_en %></h3>
+            </a>
+            <p class="price">Rs. <%= p.price.toLocaleString() %></p>
+            <a href="/product/<%= p.id %>" class="btn btn-outline"><%= t.view_details %></a>
+          </div>
+        <% }) %>
+      </div>
+
+      <div id="infiniteScrollSentinel" data-page="1" data-lang="<%= lang %>" data-has-more="<%= hasMore %>"></div>
+      <div id="loadMoreSpinner" class="spinner-wrap" style="display:none;">
+        <div class="spinner"></div>
+      </div>
+    </section>
+  </main>
+
+  <%- include('partials/policy-section') %>
+  <%- include('partials/faq-section') %>
+  <%- include('partials/contact-section') %>
+  <%- include('partials/footer') %>
+  <div id="promoModal" class="modal-overlay">
+    <div class="modal-box">
+      <button id="promoModalClose" class="modal-close" aria-label="Close">&times;</button>
+      <h2><%= t.promo_title %></h2>
+      <p><%= t.promo_msg %></p>
+      <button id="promoModalOk" class="btn btn-primary"><%= t.promo_close %></button>
+    </div>
+  </div>
+</body>
+</html>

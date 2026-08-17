@@ -1,0 +1,33 @@
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <p class="footer-brand"><%= lang === 'ur' ? settings.siteName_ur : settings.siteName_en %> &copy; <%= new Date().getFullYear() %></p>
+      <p class="tagline"><%= t.site_tagline %></p>
+      <p class="phone"><i class="fa-solid fa-phone"></i> <%= settings.phone %></p>
+    </div>
+    <div class="footer-col">
+      <h4><%= t.shop %></h4>
+      <a href="/"><%= t.home %></a>
+      <a href="/shop"><%= t.shop %></a>
+      <a href="/faq"><%= t.faq_link %></a>
+      <a href="/contact"><%= t.contact_title %></a>
+    </div>
+    <div class="footer-col">
+      <h4><%= t.admin %></h4>
+      <a href="/admin/login"><%= t.admin %></a>
+      <a href="/login"><%= t.login_btn %></a>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating Action Buttons -->
+<a href="https://wa.me/<%= settings.whatsapp %>" target="_blank" class="fab fab-whatsapp" data-tooltip="<%= t.chat_whatsapp %>" aria-label="<%= t.chat_whatsapp %>">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+<button id="backToTop" class="back-to-top" data-tooltip="<%= t.back_to_top %>" aria-label="<%= t.back_to_top %>">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<%- include('toast') %>
+
+<script src="/js/main.js"></script>

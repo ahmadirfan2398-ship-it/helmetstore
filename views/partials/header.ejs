@@ -1,0 +1,61 @@
+<a href="#mainContent" class="skip-link"><%= t.skip_to_content %></a>
+<div id="scrollProgress" class="scroll-progress-bar"></div>
+
+<%- include('sidebar') %>
+<header class="site-header">
+  <div class="container header-inner">
+    <button id="sideNavToggle" class="hamburger-btn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="/" class="logo">
+      <% if (settings.logo) { %>
+        <img src="<%= settings.logo %>" alt="logo" class="logo-img">
+      <% } %>
+      <span><%= lang === 'ur' ? settings.siteName_ur : settings.siteName_en %></span>
+    </a>
+
+    <nav class="main-nav">
+      <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>"><i class="fa-solid fa-house"></i> <%= t.home %></a>
+
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn <%= currentPath.startsWith('/shop') ? 'active' : '' %>" id="shopDropdownBtn">
+          <i class="fa-solid fa-shop"></i> <%= t.shop %> <i class="fa-solid fa-chevron-down dropdown-caret"></i>
+        </button>
+        <div class="nav-dropdown-menu" id="shopDropdownMenu">
+          <a href="/shop"><%= t.all_categories %></a>
+          <% allCategories.forEach(cat => { %>
+            <a href="/shop?category=<%= encodeURIComponent(cat) %>"><%= cat %></a>
+          <% }) %>
+        </div>
+      </div>
+
+      <a href="/faq" class="<%= currentPath === '/faq' ? 'active' : '' %>"><i class="fa-solid fa-circle-question"></i> <%= t.faq_link %></a>
+
+      <a href="/contact" class="<%= currentPath === '/contact' ? 'active' : '' %>"><i class="fa-solid fa-envelope"></i> <%= t.contact_title %></a>
+
+      <a href="/cart" class="cart-link <%= currentPath === '/cart' ? 'active' : '' %>">
+        <i class="fa-solid fa-cart-shopping"></i> <%= t.cart %>
+        <% if (cartCount > 0) { %><span class="cart-badge"><%= cartCount %></span><% } %>
+      </a>
+    </nav>
+
+    <div class="header-actions">
+      <% if (customer) { %>
+        <div class="auth-buttons">
+          <a href="/logout" class="btn btn-outline small" title="<%= customer.name %>"><i class="fa-solid fa-user"></i> <%= customer.name %></a>
+        </div>
+      <% } else { %>
+        <div class="auth-buttons">
+          <a href="/login" class="btn btn-outline small"><i class="fa-solid fa-right-to-bracket"></i> <%= t.login_btn %></a>
+          <a href="/signup" class="btn btn-primary small"><i class="fa-solid fa-user-plus"></i> <%= t.signup_link %></a>
+        </div>
+      <% } %>
+      <div class="lang-switch">
+        <a href="/lang/en?redirect=<%= encodeURIComponent(req.originalUrl) %>" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+        <span>|</span>
+        <a href="/lang/ur?redirect=<%= encodeURIComponent(req.originalUrl) %>" class="<%= lang === 'ur' ? 'active' : '' %>">اردو</a>
+      </div>
+      <button id="darkModeToggle" class="dark-toggle" data-tooltip="<%= t.dark_mode %>" title="<%= t.dark_mode %>"><i class="fa-solid fa-moon"></i></button>
+    </div>
+  </div>
+</header>

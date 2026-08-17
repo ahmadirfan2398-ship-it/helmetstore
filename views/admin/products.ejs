@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Products</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+  <div class="admin-layout">
+    <%- include('partials-sidebar') %>
+    <main class="admin-main">
+      <div class="admin-header-row">
+        <h1>Products</h1>
+        <a href="/admin/products/add" class="btn btn-primary">+ Add Product</a>
+      </div>
+
+      <table class="admin-table">
+        <thead>
+          <tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Featured</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <% products.forEach(p => { %>
+            <tr>
+              <td>
+                <% if (p.image) { %><img src="<%= p.image %>" class="admin-thumb"><% } else { %>🪖<% } %>
+              </td>
+              <td><%= p.name_en %></td>
+              <td><%= p.category %></td>
+              <td>Rs. <%= p.price.toLocaleString() %></td>
+              <td><%= p.stock %></td>
+              <td><%= p.featured ? '⭐' : '-' %></td>
+              <td class="action-cell">
+                <a href="/admin/products/edit/<%= p.id %>" class="btn btn-outline small">Edit</a>
+                <form action="/admin/products/delete/<%= p.id %>" method="POST" onsubmit="return confirm('Delete this product?');" style="display:inline;">
+                  <button type="submit" class="btn-remove small">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+          <% if (products.length === 0) { %>
+            <tr><td colspan="7">No products yet.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</body>
+</html>

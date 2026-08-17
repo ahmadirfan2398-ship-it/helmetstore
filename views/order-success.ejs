@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" class="container order-success-page" tabindex="-1">
+    <div class="success-box">
+      <div class="success-icon">✅</div>
+      <h1><%= t.order_success_title %></h1>
+      <p><%= t.order_success_msg %></p>
+
+      <div class="order-details">
+        <p><strong><%= t.order_id %>:</strong> #<%= order.id %></p>
+        <p><strong><%= t.payment_method %>:</strong> <%= t.cod %></p>
+        <p><strong><%= t.grand_total %>:</strong> Rs. <%= order.total.toLocaleString() %></p>
+      </div>
+
+      <a href="/shop" class="btn btn-primary"><%= t.continue_shopping %></a>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= product ? 'Edit Product' : 'Add Product' %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+  <div class="admin-layout">
+    <%- include('partials-sidebar') %>
+    <main class="admin-main">
+      <h1><%= product ? 'Edit Product' : 'Add New Product' %></h1>
+
+      <form action="<%= product ? '/admin/products/edit/' + product.id : '/admin/products/add' %>"
+            method="POST" enctype="multipart/form-data" class="admin-form">
+
+        <label>Name (English)</label>
+        <input type="text" name="name_en" value="<%= product ? product.name_en : '' %>" required>
+
+        <label>Name (Urdu)</label>
+        <input type="text" name="name_ur" value="<%= product ? product.name_ur : '' %>" dir="rtl" required>
+
+        <label>Category</label>
+        <input type="text" name="category" value="<%= product ? product.category : '' %>" placeholder="e.g. Full Face, Half Face, Modular, Kids" required>
+
+        <label>Price (Rs.)</label>
+        <input type="number" name="price" value="<%= product ? product.price : '' %>" required>
+
+        <label>Stock Quantity</label>
+        <input type="number" name="stock" value="<%= product ? product.stock : '' %>" required>
+
+        <label>Description (English)</label>
+        <textarea name="description_en"><%= product ? product.description_en : '' %></textarea>
+
+        <label>Description (Urdu)</label>
+        <textarea name="description_ur" dir="rtl"><%= product ? product.description_ur : '' %></textarea>
+
+        <label>Product Image</label>
+        <div class="dropzone" id="imageDropzone">
+          <input type="file" name="image" accept="image/*" id="imageFileInput" class="dropzone-input">
+          <div class="dropzone-content">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <p>Drag & drop image here, or click to browse</p>
+          </div>
+          <% if (product && product.image) { %>
+            <img src="<%= product.image %>" class="dropzone-preview" id="dropzonePreview">
+          <% } else { %>
+            <img src="" class="dropzone-preview" id="dropzonePreview" style="display:none;">
+          <% } %>
+        </div>
+
+        <label>Tags / Features</label>
+        <div class="chip-input" id="tagChipInput">
+          <% if (product && product.tags) { %>
+            <% product.tags.forEach(tag => { %>
+              <span class="chip"><%= tag %><button type="button" class="chip-remove">&times;</button></span>
+            <% }) %>
+          <% } %>
+          <input type="text" id="chipTextInput" placeholder="Type a tag and press Enter">
+        </div>
+        <input type="hidden" name="tags" id="tagsHidden" value="<%= product && product.tags ? product.tags.join(',') : '' %>">
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="featured" <%= (product && product.featured) ? 'checked' : '' %>>
+          Show as Featured on Homepage
+        </label>
+
+        <button type="submit" class="btn btn-primary"><%= product ? 'Update Product' : 'Add Product' %></button>
+        <a href="/admin/products" class="btn btn-outline">Cancel</a>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    // Chip / tag input
+    (function () {
+      const wrap = document.getElementById('tagChipInput');
+      const textInput = document.getElementById('chipTextInput');
+      const hidden = document.getElementById('tagsHidden');
+
+      function syncHidden() {
+        const chips = wrap.querySelectorAll('.chip');
+        hidden.value = Array.from(chips).map(c => c.textContent.replace('×', '').trim()).join(',');
+      }
+      function addChip(text) {
+        if (!text.trim()) return;
+        const chip = document.createElement('span');
+        chip.className = 'chip';
+        chip.textContent = text.trim();
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'chip-remove';
+        removeBtn.innerHTML = '&times;';
+        removeBtn.addEventListener('click', () => { chip.remove(); syncHidden(); });
+        chip.appendChild(removeBtn);
+        wrap.insertBefore(chip, textInput);
+        syncHidden();
+      }
+      wrap.querySelectorAll('.chip-remove').forEach(btn => {
+        btn.addEventListener('click', () => { btn.closest('.chip').remove(); syncHidden(); });
+      });
+      textInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ',') {
+          e.preventDefault();
+          addChip(textInput.value);
+          textInput.value = '';
+        }
+      });
+    })();
+
+    // Drag & drop image upload
+    (function () {
+      const dropzone = document.getElementById('imageDropzone');
+      const input = document.getElementById('imageFileInput');
+      const preview = document.getElementById('dropzonePreview');
+
+      function showPreview(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => { preview.src = e.target.result; preview.style.display = 'block'; };
+        reader.readAsDataURL(file);
+      }
+
+      dropzone.addEventListener('click', () => input.click());
+      input.addEventListener('change', () => showPreview(input.files[0]));
+
+      ['dragenter', 'dragover'].forEach(evt => {
+        dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+      });
+      ['dragleave', 'drop'].forEach(evt => {
+        dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
+      });
+      dropzone.addEventListener('drop', (e) => {
+        const file = e.dataTransfer.files[0];
+        if (file) { input.files = e.dataTransfer.files; showPreview(file); }
+      });
+    })();
+  </script>
+</body>
+</html>

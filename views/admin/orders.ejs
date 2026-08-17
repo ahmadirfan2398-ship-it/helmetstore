@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Orders</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+  <div class="admin-layout">
+    <%- include('partials-sidebar') %>
+    <main class="admin-main">
+      <h1>Orders</h1>
+
+      <% orders.forEach(o => { %>
+        <div class="order-card">
+          <div class="order-card-header">
+            <strong>#<%= o.id %></strong>
+            <span><%= new Date(o.date).toLocaleString() %></span>
+            <span class="status-tag <%= o.status.toLowerCase() %>"><%= o.status %></span>
+          </div>
+          <div class="order-card-body">
+            <p><strong>Customer:</strong> <%= o.customer.name %> | <%= o.customer.phone %></p>
+            <p><strong>Address:</strong> <%= o.customer.address %>, <%= o.customer.city %></p>
+            <ul class="summary-list">
+              <% o.items.forEach(item => { %>
+                <li><span><%= item.name_en %> x<%= item.qty %></span><span>Rs. <%= (item.price * item.qty).toLocaleString() %></span></li>
+              <% }) %>
+            </ul>
+            <p><strong>Total: Rs. <%= o.total.toLocaleString() %></strong> (COD)</p>
+
+            <form action="/admin/orders/status/<%= o.id %>" method="POST" class="status-form">
+              <select name="status">
+                <option value="Pending" <%= o.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                <option value="Confirmed" <%= o.status === 'Confirmed' ? 'selected' : '' %>>Confirmed</option>
+                <option value="Shipped" <%= o.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                <option value="Delivered" <%= o.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                <option value="Cancelled" <%= o.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+              </select>
+              <button type="submit" class="btn btn-outline small">Update Status</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+
+      <% if (orders.length === 0) { %>
+        <p>No orders yet.</p>
+      <% } %>
+    </main>
+  </div>
+</body>
+</html>

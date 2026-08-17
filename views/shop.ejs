@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" class="container" tabindex="-1">
+    <% var crumbs = [{label: t.shop}]; %>
+    <%- include('partials/breadcrumb', { crumbs: crumbs }) %>
+
+    <div class="shop-layout">
+      <aside class="shop-filters">
+        <form action="/shop" method="GET" id="filterForm">
+          <% if (activeCategory) { %><input type="hidden" name="category" value="<%= activeCategory %>"><% } %>
+          <% if (query) { %><input type="hidden" name="q" value="<%= query %>"><% } %>
+
+          <h4><%= t.price_range %></h4>
+          <input type="range" name="maxPrice" min="500" max="10000" step="500" value="<%= maxPrice %>" id="priceRange" class="range-slider">
+          <div class="range-value">Rs. 0 - Rs. <span id="priceRangeVal"><%= maxPrice.toLocaleString() %></span></div>
+        </form>
+      </aside>
+
+      <div class="shop-main">
+        <form action="/shop" method="GET" class="search-bar" id="searchForm" autocomplete="off">
+          <div class="search-input-wrap">
+            <input type="text" name="q" id="searchInput" placeholder="<%= t.search %>" value="<%= query %>">
+            <div id="searchSuggestions" class="search-suggestions"></div>
+          </div>
+          <% if (activeCategory) { %><input type="hidden" name="category" value="<%= activeCategory %>"><% } %>
+          <input type="hidden" name="maxPrice" value="<%= maxPrice %>">
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+
+        <div class="category-pills">
+          <a href="/shop" class="pill <%= !activeCategory ? 'active' : '' %>"><%= t.all_categories %></a>
+          <% categories.forEach(cat => { %>
+            <a href="/shop?category=<%= encodeURIComponent(cat) %>" class="pill <%= activeCategory === cat ? 'active' : '' %>"><%= cat %></a>
+          <% }) %>
+        </div>
+
+        <% if (products.length === 0) { %>
+          <p class="empty-msg"><%= t.no_products %></p>
+        <% } else { %>
+          <div class="product-grid">
+            <% products.forEach(p => { %>
+              <div class="product-card">
+                <a href="/product/<%= p.id %>">
+                  <div class="product-img">
+                    <% if (p.image) { %>
+                      <img src="<%= p.image %>" alt="<%= p.name_en %>">
+                    <% } else { %>
+                      <div class="img-placeholder">🪖</div>
+                    <% } %>
+                  </div>
+                  <h3><%= lang === 'ur' ? p.name_ur : p.name_en %></h3>
+                </a>
+                <p class="price">Rs. <%= p.price.toLocaleString() %></p>
+                <p class="stock-tag <%= p.stock > 0 ? 'in' : 'out' %>">
+                  <%= p.stock > 0 ? t.stock : t.out_of_stock %>
+                </p>
+                <a href="/product/<%= p.id %>" class="btn btn-outline"><%= t.view_details %></a>
+              </div>
+            <% }) %>
+          </div>
+
+          <% if (totalPages > 1) { %>
+            <nav class="pagination" aria-label="Pagination">
+              <a class="page-btn <%= currentPage <= 1 ? 'disabled' : '' %>"
+                 href="/shop?<%= activeCategory ? 'category=' + encodeURIComponent(activeCategory) + '&' : '' %>q=<%= encodeURIComponent(query) %>&maxPrice=<%= maxPrice %>&page=<%= currentPage - 1 %>">
+                <i class="fa-solid fa-chevron-left"></i>
+              </a>
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                <a class="page-btn <%= i === currentPage ? 'active' : '' %>"
+                   href="/shop?<%= activeCategory ? 'category=' + encodeURIComponent(activeCategory) + '&' : '' %>q=<%= encodeURIComponent(query) %>&maxPrice=<%= maxPrice %>&page=<%= i %>"><%= i %></a>
+              <% } %>
+              <a class="page-btn <%= currentPage >= totalPages ? 'disabled' : '' %>"
+                 href="/shop?<%= activeCategory ? 'category=' + encodeURIComponent(activeCategory) + '&' : '' %>q=<%= encodeURIComponent(query) %>&maxPrice=<%= maxPrice %>&page=<%= currentPage + 1 %>">
+                <i class="fa-solid fa-chevron-right"></i>
+              </a>
+            </nav>
+            <p class="page-info"><%= t.page %> <%= currentPage %> <%= t.of %> <%= totalPages %></p>
+          <% } %>
+        <% } %>
+      </div>
+    </div>
+  </main>
+
+  <%- include('partials/policy-section') %>
+  <%- include('partials/faq-section') %>
+  <%- include('partials/contact-section') %>
+  <%- include('partials/footer') %>
+</body>
+</html>

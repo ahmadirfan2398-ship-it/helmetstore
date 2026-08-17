@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+  <div class="admin-layout">
+    <%- include('partials-sidebar') %>
+    <main class="admin-main">
+      <h1>Dashboard</h1>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <h3><%= stats.totalProducts %></h3>
+          <p>Total Products</p>
+        </div>
+        <div class="stat-card">
+          <h3><%= stats.totalOrders %></h3>
+          <p>Total Orders</p>
+        </div>
+        <div class="stat-card">
+          <h3><%= stats.pendingOrders %></h3>
+          <p>Pending Orders</p>
+        </div>
+        <div class="stat-card">
+          <h3>Rs. <%= stats.totalRevenue.toLocaleString() %></h3>
+          <p>Total Revenue</p>
+        </div>
+      </div>
+
+      <h2>Recent Orders</h2>
+      <table class="admin-table">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
+        <tbody>
+          <% recentOrders.forEach(o => { %>
+            <tr>
+              <td>#<%= o.id %></td>
+              <td><%= o.customer.name %></td>
+              <td>Rs. <%= o.total.toLocaleString() %></td>
+              <td><span class="status-tag <%= o.status.toLowerCase() %>"><%= o.status %></span></td>
+            </tr>
+          <% }) %>
+          <% if (recentOrders.length === 0) { %>
+            <tr><td colspan="4">No orders yet.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" class="container error-page" tabindex="-1">
+    <div class="error-box">
+      <div class="error-icon">🪖💨</div>
+      <h1>404</h1>
+      <h2><%= t.page_not_found %></h2>
+      <p><%= t.page_not_found_msg %></p>
+      <a href="/" class="btn btn-primary"><i class="fa-solid fa-house"></i> <%= t.go_home %></a>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

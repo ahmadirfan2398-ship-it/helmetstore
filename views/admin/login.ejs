@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+  <div class="admin-login-box">
+    <h1>🪖 Helmet Store Admin</h1>
+    <% if (error) { %><p class="error-msg"><%= error %></p><% } %>
+    <form action="/admin/login" method="POST">
+      <label>Username</label>
+      <input type="text" name="username" required autofocus>
+      <label>Password</label>
+      <input type="password" name="password" required>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p class="hint">Default: admin / admin123</p>
+    <p><a href="/">&larr; Back to store</a></p>
+  </div>
+</body>
+</html>

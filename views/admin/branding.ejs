@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Branding Settings</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+  <div class="admin-layout">
+    <%- include('partials-sidebar') %>
+    <main class="admin-main">
+      <h1>Branding Settings</h1>
+
+      <form action="/admin/branding" method="POST" enctype="multipart/form-data" class="admin-form">
+        <label>Site Name (English)</label>
+        <input type="text" name="siteName_en" value="<%= settings.siteName_en %>" required>
+
+        <label>Site Name (Urdu)</label>
+        <input type="text" name="siteName_ur" value="<%= settings.siteName_ur %>" dir="rtl" required>
+
+        <label>Contact Phone</label>
+        <input type="text" name="phone" value="<%= settings.phone %>">
+
+        <label>Logo</label>
+        <div class="dropzone" id="logoDropzone">
+          <input type="file" name="logo" accept="image/*" id="logoFileInput" class="dropzone-input">
+          <div class="dropzone-content">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <p>Drag & drop logo here, or click to browse</p>
+          </div>
+          <% if (settings.logo) { %>
+            <img src="<%= settings.logo %>" class="dropzone-preview" id="logoDropzonePreview">
+          <% } else { %>
+            <img src="" class="dropzone-preview" id="logoDropzonePreview" style="display:none;">
+          <% } %>
+        </div>
+
+        <label>Theme Color</label>
+        <div class="color-picker-row">
+          <input type="color" id="themeColorInput" name="themeColor" value="<%= settings.themeColor %>">
+          <span id="colorHexLabel"><%= settings.themeColor %></span>
+        </div>
+
+        <label>Quick Presets</label>
+        <div class="preset-grid">
+          <% Object.keys(presets).forEach(name => { %>
+            <button type="button" class="preset-swatch" data-color="<%= presets[name] %>" style="background: <%= presets[name] %>;" title="<%= name %>">
+              <%= name %>
+            </button>
+          <% }) %>
+        </div>
+
+        <div class="live-preview" id="livePreview">
+          <div class="preview-header" id="previewHeader">
+            <span>🪖 <%= settings.siteName_en %></span>
+            <button type="button" class="preview-btn" id="previewBtn">Add to Cart</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Branding</button>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    const colorInput = document.getElementById('themeColorInput');
+    const hexLabel = document.getElementById('colorHexLabel');
+    const previewHeader = document.getElementById('previewHeader');
+    const previewBtn = document.getElementById('previewBtn');
+
+    function applyColor(color) {
+      colorInput.value = color;
+      hexLabel.textContent = color;
+      previewHeader.style.background = color;
+      previewBtn.style.background = color;
+    }
+
+    colorInput.addEventListener('input', (e) => applyColor(e.target.value));
+
+    document.querySelectorAll('.preset-swatch').forEach(btn => {
+      btn.addEventListener('click', () => applyColor(btn.dataset.color));
+    });
+
+    // Init preview with current color
+    applyColor(colorInput.value);
+
+    // Drag & drop logo upload
+    (function () {
+      const dropzone = document.getElementById('logoDropzone');
+      const input = document.getElementById('logoFileInput');
+      const preview = document.getElementById('logoDropzonePreview');
+
+      function showPreview(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => { preview.src = e.target.result; preview.style.display = 'block'; };
+        reader.readAsDataURL(file);
+      }
+
+      dropzone.addEventListener('click', () => input.click());
+      input.addEventListener('change', () => showPreview(input.files[0]));
+
+      ['dragenter', 'dragover'].forEach(evt => {
+        dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+      });
+      ['dragleave', 'drop'].forEach(evt => {
+        dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
+      });
+      dropzone.addEventListener('drop', (e) => {
+        const file = e.dataTransfer.files[0];
+        if (file) { input.files = e.dataTransfer.files; showPreview(file); }
+      });
+    })();
+  </script>
+</body>
+</html>

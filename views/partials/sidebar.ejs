@@ -1,0 +1,30 @@
+<nav id="sideNav" class="side-nav">
+  <div class="side-nav-header">
+    <span class="logo-small">🪖 <%= lang === 'ur' ? settings.siteName_ur : settings.siteName_en %></span>
+    <button id="sideNavClose" class="side-nav-close" aria-label="Close menu">&times;</button>
+  </div>
+
+  <div class="side-nav-section">
+    <a href="/" class="side-nav-link <%= currentPath === '/' ? 'active' : '' %>"><i class="fa-solid fa-house"></i> <%= t.home %></a>
+    <a href="/shop" class="side-nav-link <%= currentPath === '/shop' ? 'active' : '' %>"><i class="fa-solid fa-shop"></i> <%= t.shop %></a>
+    <a href="/faq" class="side-nav-link <%= currentPath === '/faq' ? 'active' : '' %>"><i class="fa-solid fa-circle-question"></i> <%= t.faq_link %></a>
+    <a href="/contact" class="side-nav-link <%= currentPath === '/contact' ? 'active' : '' %>"><i class="fa-solid fa-envelope"></i> <%= t.contact_title %></a>
+  </div>
+
+  <div class="side-nav-section">
+    <h4><%= t.all_categories %></h4>
+    <a href="/shop" class="side-nav-link category-link"><i class="fa-solid fa-layer-group"></i> <%= t.all_categories %></a>
+    <% allCategories.forEach(cat => { %>
+      <a href="/shop?category=<%= encodeURIComponent(cat) %>" class="side-nav-link category-link"><%= cat %></a>
+    <% }) %>
+  </div>
+
+  <div class="side-nav-section">
+    <% if (customer) { %>
+      <a href="/logout" class="side-nav-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    <% } else { %>
+      <a href="/login" class="side-nav-link"><i class="fa-solid fa-user"></i> <%= t.login_btn %></a>
+    <% } %>
+  </div>
+</nav>
+<div id="sideNavOverlay" class="side-nav-overlay"></div>

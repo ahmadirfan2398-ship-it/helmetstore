@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" class="container auth-page" tabindex="-1">
+    <div class="auth-box">
+      <h1><%= t.signup_title %></h1>
+      <% if (error) { %><p class="error-msg"><%= error %></p><% } %>
+
+      <form action="/signup" method="POST" class="auth-form">
+        <label><%= t.your_name %></label>
+        <input type="text" name="name" required>
+
+        <label><%= t.email %></label>
+        <input type="email" name="email" required>
+
+        <label><%= t.phone_number %></label>
+        <input type="tel" name="phone" required placeholder="03001234567">
+
+        <label><%= t.password %></label>
+        <div class="password-input-group">
+          <input type="password" name="password" id="signupPwd" required>
+          <button type="button" class="toggle-password" data-target="signupPwd"><i class="fa-solid fa-eye"></i></button>
+        </div>
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="terms" required>
+          <%= t.agree_terms %>
+        </label>
+
+        <button type="submit" class="btn btn-primary full-width"><%= t.signup_title %></button>
+      </form>
+
+      <p class="auth-switch"><%= t.have_account %> <a href="/login"><%= t.login_link %></a></p>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

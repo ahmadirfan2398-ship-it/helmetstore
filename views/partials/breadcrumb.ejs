@@ -1,0 +1,11 @@
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="/"><i class="fa-solid fa-house"></i> <%= t.breadcrumb_home %></a>
+  <% crumbs.forEach((crumb, i) => { %>
+    <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+    <% if (i === crumbs.length - 1) { %>
+      <span class="breadcrumb-current"><%= crumb.label %></span>
+    <% } else { %>
+      <a href="<%= crumb.url %>"><%= crumb.label %></a>
+    <% } %>
+  <% }) %>
+</nav>

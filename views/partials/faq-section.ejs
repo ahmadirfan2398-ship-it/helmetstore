@@ -1,0 +1,19 @@
+<section class="faq-embed-section">
+  <div class="container">
+    <h2 class="section-title"><%= t.faq_title %></h2>
+    <div class="accordion">
+      <% t.faq.forEach((item, i) => { %>
+        <div class="accordion-item">
+          <button class="accordion-header" data-index="<%= i %>">
+            <span><%= item.q %></span>
+            <i class="fa-solid fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-body">
+            <p><%= item.a %></p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+    <p class="faq-more-link"><a href="/faq"><%= t.faq_link %> <i class="fa-solid fa-arrow-right"></i></a></p>
+  </div>
+</section>

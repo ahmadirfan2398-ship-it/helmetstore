@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<%- include('partials/head') %>
+<body>
+  <%- include('partials/header') %>
+
+  <main id="mainContent" class="container product-detail" tabindex="-1">
+    <% var crumbs = [{label: t.shop, url: '/shop'}, {label: product.category, url: '/shop?category=' + encodeURIComponent(product.category)}, {label: lang === 'ur' ? product.name_ur : product.name_en}]; %>
+    <%- include('partials/breadcrumb', { crumbs: crumbs }) %>
+
+    <div class="product-detail-grid">
+      <div class="product-detail-img" id="lightboxTrigger">
+        <% if (product.image) { %>
+          <img src="<%= product.image %>" alt="<%= product.name_en %>">
+        <% } else { %>
+          <div class="img-placeholder large">🪖</div>
+        <% } %>
+        <span class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </div>
+      <div class="product-detail-info">
+        <h1><%= lang === 'ur' ? product.name_ur : product.name_en %></h1>
+        <p class="category-tag"><%= product.category %></p>
+        <% if (product.tags && product.tags.length) { %>
+          <div class="tag-badges">
+            <% product.tags.forEach(tag => { %><span class="tag-badge"><%= tag %></span><% }) %>
+          </div>
+        <% } %>
+
+        <div class="rating-summary">
+          <span class="stars-display" data-rating="<%= rating.avg %>"></span>
+          <span class="rating-count">
+            <% if (rating.count > 0) { %>
+              <%= rating.avg %> · <%= t.based_on_reviews.replace('{n}', rating.count) %>
+            <% } else { %>
+              <%= t.no_reviews %>
+            <% } %>
+          </span>
+        </div>
+
+        <p class="price large">Rs. <%= product.price.toLocaleString() %></p>
+        <p class="stock-tag <%= product.stock > 0 ? 'in' : 'out' %>">
+          <%= product.stock > 0 ? t.stock + ' (' + product.stock + ')' : t.out_of_stock %>
+        </p>
+
+        <% if (product.stock > 0) { %>
+          <form action="/cart/add/<%= product.id %>" method="POST" class="add-cart-form">
+            <input type="number" name="qty" value="1" min="1" max="<%= product.stock %>">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i> <%= t.add_to_cart %></button>
+          </form>
+        <% } else { %>
+          <button class="btn btn-disabled" disabled><%= t.out_of_stock %></button>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab-headers">
+        <button class="tab-header active" data-tab="desc"><%= t.tab_description %></button>
+        <button class="tab-header" data-tab="specs"><%= t.tab_specs %></button>
+        <button class="tab-header" data-tab="reviews"><%= t.tab_reviews %> (<%= rating.count %>)</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-desc">
+        <p><%= lang === 'ur' ? product.description_ur : product.description_en %></p>
+      </div>
+
+      <div class="tab-panel" id="tab-specs">
+        <table class="specs-table">
+          <tr><td><%= t.specs_material %></td><td><%= t.specs_material_val %></td></tr>
+          <tr><td><%= t.specs_weight %></td><td><%= t.specs_weight_val %></td></tr>
+          <tr><td><%= t.specs_certification %></td><td><%= t.specs_certification_val %></td></tr>
+          <tr><td><%= t.specs_warranty %></td><td><%= t.specs_warranty_val %></td></tr>
+        </table>
+      </div>
+
+      <div class="tab-panel" id="tab-reviews">
+        <div id="reviews">
+          <% if (reviews.length === 0) { %>
+            <p class="empty-msg"><%= t.no_reviews %></p>
+          <% } else { %>
+            <% reviews.forEach(r => { %>
+              <div class="review-card">
+                <div class="review-header">
+                  <strong><%= r.name %></strong>
+                  <span class="stars-display" data-rating="<%= r.rating %>"></span>
+                </div>
+                <p><%= r.comment %></p>
+                <span class="review-date"><%= new Date(r.date).toLocaleDateString() %></span>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+
+        <h3><%= t.write_review %></h3>
+        <% if (reviewError) { %><p class="error-msg"><%= reviewError %></p><% } %>
+        <form action="/product/<%= product.id %>/review" method="POST" class="review-form">
+          <label><%= t.your_rating %></label>
+          <div class="star-input" id="starInput">
+            <input type="hidden" name="rating" id="ratingValue" value="0">
+            <i class="fa-regular fa-star" data-val="1"></i>
+            <i class="fa-regular fa-star" data-val="2"></i>
+            <i class="fa-regular fa-star" data-val="3"></i>
+            <i class="fa-regular fa-star" data-val="4"></i>
+            <i class="fa-regular fa-star" data-val="5"></i>
+          </div>
+          <label><%= t.your_name %></label>
+          <input type="text" name="name" required>
+          <label><%= t.your_review %></label>
+          <textarea name="comment" rows="3"></textarea>
+          <button type="submit" class="btn btn-primary"><%= t.submit_review %></button>
+        </form>
+      </div>
+    </div>
+
+    <% if (related.length > 0) { %>
+      <h2 class="section-title"><%= t.related_products %></h2>
+      <div class="product-grid">
+        <% related.forEach(p => { %>
+          <div class="product-card">
+            <a href="/product/<%= p.id %>">
+              <div class="product-img">
+                <% if (p.image) { %>
+                  <img src="<%= p.image %>" alt="<%= p.name_en %>">
+                <% } else { %>
+                  <div class="img-placeholder">🪖</div>
+                <% } %>
+              </div>
+              <h3><%= lang === 'ur' ? p.name_ur : p.name_en %></h3>
+            </a>
+            <p class="price">Rs. <%= p.price.toLocaleString() %></p>
+            <a href="/product/<%= p.id %>" class="btn btn-outline"><%= t.view_details %></a>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox-overlay">
+    <button id="lightboxClose" class="lightbox-close">&times;</button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
+  <%- include('partials/policy-section') %>
+  <%- include('partials/faq-section') %>
+  <%- include('partials/contact-section') %>
+  <%- include('partials/footer') %>
+</body>
+</html>
