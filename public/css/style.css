@@ -248,20 +248,39 @@ a, button { transition: color 0.2s, background 0.2s, transform 0.15s, box-shadow
 .animate-on-scroll.in-view { opacity: 1; transform: translateY(0); }
 
 /* ---------- Back to top button ---------- */
+.fab-whatsapp {
+  position: fixed;
+  bottom: 80px;
+  inset-inline-end: 24px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #25D366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  box-shadow: 0 4px 18px rgba(37,211,102,0.4);
+  z-index: 300;
+  transition: transform 0.25s;
+}
+.fab-whatsapp:hover { transform: scale(1.1); }
+
 .back-to-top {
   position: fixed;
-  bottom: 30px;
-  inset-inline-end: 30px;
-  width: 48px;
-  height: 48px;
+  bottom: 24px;
+  inset-inline-end: 24px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: var(--theme-color);
   color: #fff;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   cursor: pointer;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
-  z-index: 200;
+  box-shadow: 0 4px 18px rgba(26,115,232,0.4);
+  z-index: 300;
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
