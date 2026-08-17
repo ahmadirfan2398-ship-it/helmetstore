@@ -25,8 +25,8 @@ db.defaults({
     siteName_ur: 'ہیلمٹ اسٹور',
     themeColor: '#1E88E5',
     logo: '',
-    phone: '0300-0000000',
-    whatsapp: '923000000000'
+    phone: '0306-056902',
+    whatsapp: '92306056902'
   }
 }).write();
 
