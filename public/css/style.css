@@ -247,11 +247,11 @@ a, button { transition: color 0.2s, background 0.2s, transform 0.15s, box-shadow
 .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
 .animate-on-scroll.in-view { opacity: 1; transform: translateY(0); }
 
-/* ---------- Back to top button ---------- */
+/* ---------- Floating action buttons ---------- */
 .fab-whatsapp {
   position: fixed;
-  bottom: 80px;
-  right: 24px;
+  bottom: 90px;
+  right: 20px;
   width: 54px;
   height: 54px;
   border-radius: 50%;
@@ -262,15 +262,16 @@ a, button { transition: color 0.2s, background 0.2s, transform 0.15s, box-shadow
   justify-content: center;
   font-size: 1.7rem;
   box-shadow: 0 4px 18px rgba(37,211,102,0.4);
-  z-index: 300;
+  z-index: 999;
   transition: transform 0.25s;
 }
 .fab-whatsapp:hover { transform: scale(1.1); }
 
 .back-to-top {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 20px;
+  right: 20px;
+  left: auto;
   width: 54px;
   height: 54px;
   border-radius: 50%;
@@ -280,7 +281,7 @@ a, button { transition: color 0.2s, background 0.2s, transform 0.15s, box-shadow
   font-size: 1.3rem;
   cursor: pointer;
   box-shadow: 0 4px 18px rgba(26,115,232,0.4);
-  z-index: 300;
+  z-index: 999;
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
